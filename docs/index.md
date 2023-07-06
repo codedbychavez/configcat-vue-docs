@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: https://v1.vuepress.vuejs.org/hero.png
+heroImage: logo.png
 tagline: Documentation resource for the configcat-vue plugin
 actionText: Quick Start →
 actionLink: /guide/
