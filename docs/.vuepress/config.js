@@ -42,8 +42,8 @@ module.exports = {
         link: '/config/'
       },
       {
-        text: 'VuePress',
-        link: 'https://v1.vuepress.vuejs.org'
+        text: 'GitHub Repo',
+        link: 'https://github.com/codedbychavez/configcat-vue'
       }
     ],
     sidebar: {
