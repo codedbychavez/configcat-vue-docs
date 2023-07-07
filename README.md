@@ -24,8 +24,6 @@ Please note that the provided link is subject to ConfigCat's website and may cha
 
 Whether your strengths lie in coding, documentation, testing, or bug reporting, your expertise is highly valued. Visit the [configcat-vue GitHub repository](https://github.com/codedbychavez/configcat-vue), explore the codebase, and embark on your journey to make a meaningful impact. Let's unite our efforts to create something extraordinary and leave a lasting impression.
 
-
-
-## Special thanks to:
+## Special thanks to
 
 - https://vuepress.vuejs.org/guide/getting-started.html#quick-start
