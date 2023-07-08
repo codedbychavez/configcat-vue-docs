@@ -54,6 +54,7 @@ module.exports = {
           children: [
             '',
             'quickstart',
+            'advanced-usage',
           ]
         }
       ],
