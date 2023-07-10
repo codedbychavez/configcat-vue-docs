@@ -55,6 +55,7 @@ module.exports = {
             '',
             'quickstart',
             'advanced-usage',
+            'references',
           ]
         }
       ],
