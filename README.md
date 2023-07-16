@@ -1,6 +1,10 @@
 # configcat-vue documentation
 
-Check out the docs website here: <https://configcat-vue.netlify.app/>
+## Quick links
+
+- Visit the docs website here: <https://configcat-vue.netlify.app/>
+- Download the npm package here: <https://www.npmjs.com/package/configcat-vue>
+- Check out the sample vue here: <https://github.com/codedbychavez/configcat-vue-sample>
 
 ## Introduction
 
