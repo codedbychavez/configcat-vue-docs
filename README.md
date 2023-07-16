@@ -1,6 +1,6 @@
-# configcat-vue docs
+# configcat-vue documentation
 
-<https://configcat-vue.netlify.app/>
+Check out the docs website here: <https://configcat-vue.netlify.app/>
 
 ## Introduction
 
