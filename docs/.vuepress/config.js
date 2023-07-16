@@ -4,7 +4,7 @@ module.exports = {
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#title
    */
-  title: 'ConfigCat + Vue.js',
+  title: 'configcat-vue docs',
   /**
    * Ref：https://v1.vuepress.vuejs.org/config/#description
    */

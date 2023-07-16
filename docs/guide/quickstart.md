@@ -1,25 +1,21 @@
 # Quick start
 
-## Pre-requisites
-
-- [Vue 3](https://vuejs.org/)
-
 ## Installation
 
-1. Install the npm package:
+Install the npm package:
 
 ```sh
 npm install configcat-vue
 ```
 
-## Usage
+## Setup
 
 In your `main.js` file:
 
 1. Import the plugin
 
 ```js
-import { ConfigCatPlugin } from 'configcat-vue';
+import { ConfigCatPlugin } from "configcat-vue";
 ```
 
 2. Use the plugin:
@@ -27,15 +23,22 @@ import { ConfigCatPlugin } from 'configcat-vue';
 ```js
 app.use(ConfigCatPlugin, {
   SDKKey: "YOUR-CONFIGCAT-SDK-KEY", // SDKKey is required
+  pollingMode: 'auto',
   clientOptions: { // clientOptions is optional
-    pollIntervalSeconds: 95,
+    pollIntervalSeconds: 95, // Use the pollIntervalSeconds to change the polling interval (how often the ConfigCat SDK should download your feature flags and setting values from ConfigCat).
   }
 });
 ```
 
-## Using the FeatureWrapper component
+## Usage
 
-The **FeatureWrapper** component allows you to wrap features, components, and HTML within your Vue3 app. When the feature flag is enabled, the wrapped components are rendered.
+In this section, you'll learn how to put the plugin to use in your Vue.js application.
+
+### Using the FeatureWrapper component
+
+In addition to the plugin, the NPM package ships with a useful `**<FeatureWrapper />**` Vue component. Let's discuss it further.
+
+The `FeatureWrapper` component enables you to wrap the parts of your Vue application (components, HTML elements, etc.) that you want a specific feature flag to control. When the feature flag is turned on, the wrapped components are rendered. Here's how to use it.
 
 1. In your `.vue` file import the **FeatureWrapper** component:
 
@@ -56,14 +59,37 @@ export default {
 ```js
 <template>
   <div class="my-app">
-    <FeatureWrapper featureKey="featurekey">
-      <p>
-        This will show if the feature flag with <b>featurekey</b> is enabled in
-        ConfigCat
-      </p>
+    <FeatureWrapper featureKey="YOUR-FEATURE-KEY-GOES-HERE">
+      // This is displayed when the feature flag is turned on
+      <TheNewFeature />
     </FeatureWrapper>
   </div>
 </template>
 ```
 
-3. That's it! Need to know more? check out the **Advanced usage** section.
+3. Optionally, this component also provides an `#else` template. You can include components or HTML elements within this template that you want to display when the feature flag is **turned off**.
+
+```jsx
+<FeatureWrapper featureKey="myFirstFeatureFlag">
+  <TheNewFeature />
+  <template #else>
+    <div class="feature-not-available-wrapper">
+      <p>Sorry this feature is not available. Your feature flag is off.</p>
+    </div>
+  </template>
+</FeatureWrapper>
+```
+
+4. Depending on the number of seconds specified for `pollIntervalSeconds` (with the `pollingMode` option set to `auto`), if you change the value of your feature flag from "on" to "off" or vice versa, the `<FeatureWrapper />` component will automatically update itself at each interval and re-render accordingly.
+
+```js
+app.use(ConfigCatPlugin, {
+  SDKKey: "YOUR-CONFIGCAT-SDK-KEY", // SDKKey is required
+  pollingMode: 'auto',
+  clientOptions: { // clientOptions is optional
+    pollIntervalSeconds: 10, // Use the pollIntervalSeconds to change the polling interval (how often the ConfigCat SDK should download your feature flags and setting values from ConfigCat).
+  }
+});
+```
+
+5. That's it! Need to know more and go a little further? check out the **Advanced usage** section.
