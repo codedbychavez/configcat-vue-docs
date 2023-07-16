@@ -30,4 +30,4 @@ Whether your strengths lie in coding, documentation, testing, or bug reporting, 
 
 ## Special thanks to
 
-- https://vuepress.vuejs.org/guide/getting-started.html#quick-start
+https://vuepress.vuejs.org/guide/getting-started.html#quick-start
