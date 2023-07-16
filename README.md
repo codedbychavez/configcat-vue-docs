@@ -1,4 +1,8 @@
-# Introduction
+# configcat-vue docs
+
+<https://configcat-vue.netlify.app/>
+
+## Introduction
 
 Welcome to the official documentation for the [configcat-vue](https://www.npmjs.com/package/configcat-vue) plugin, a powerful and versatile npm package designed to streamline your feature development workflow. Whether you're a seasoned developer or just starting out, ConfigCat-Vue offers a comprehensive way to leverage all the benefits of using ConfigCat feature flags in your Vue.js applications. This plugin was designed to be simple yet inclusive of all the features offered by other [ConfigCat SDKs](https://configcat.com/docs/sdk-reference/overview/). This plugin empowers you to handle both simple and complex feature management in your Vue.js app, saving you time and effort.
 
