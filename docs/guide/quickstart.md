@@ -82,6 +82,8 @@ export default {
 
 4. Depending on the number of seconds specified for `pollIntervalSeconds` (with the `pollingMode` option set to `auto`), if you change the value of your feature flag from "on" to "off" or vice versa, the `<FeatureWrapper />` component will automatically update itself at each interval and re-render accordingly.
 
+> See documentation: <https://configcat.com/docs/sdk-reference/js/#polling-modes>
+
 ```js
 app.use(ConfigCatPlugin, {
   SDKKey: "YOUR-CONFIGCAT-SDK-KEY", // SDKKey is required
