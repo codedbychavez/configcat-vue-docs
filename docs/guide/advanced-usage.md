@@ -87,7 +87,7 @@ export default {
 
 ## Listening to feature flag changes emitted from the FeatureWrapper component
 
-When you toggle your feature flag ON/OFF in the ConfigCat dashboard the configcat-vue plugin is notified and emits the updated your updated feature flag value. You can listen to the changes using `@flag-value-changed`like this:
+When you toggle your feature flag ON/OFF in the ConfigCat dashboard the configcat-vue plugin is notified and emits the updated feature flag value. You can listen to the changes using `@flag-value-changed`like this:
 
 ```js
 <template>
