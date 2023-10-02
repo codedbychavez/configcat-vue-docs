@@ -105,5 +105,3 @@ app.use(ConfigCatPlugin, {
 ```
 
 5. That's it! If you want to explore more advanced usage, check out the "Advanced Usage" section.
-
-These changes aim to improve readability and maintain consistency in your documentation.
