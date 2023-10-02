@@ -1,5 +1,9 @@
 # configcat-vue documentation
 
+## Quick start
+
+<https://configcat-vue.netlify.app/guide/quickstart.html>
+
 ## Quick links
 
 - Visit the docs website here: <https://configcat-vue.netlify.app/>
