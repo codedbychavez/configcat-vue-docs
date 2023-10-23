@@ -1,22 +1,10 @@
 {
-  "name": "configcat-vue-documentation",
-  "version": "0.0.1",
-  "description": "Documentation resource for the configcat-vue plugin",
-  "main": "index.js",
-  "authors": {
-    "name": "Chavez Harris",
-    "email": "codedbychavez@gmail.com"
-  },
-  "repository": "https://github.com/codedbychavez/configcat-vue-docs/ConfigCat Vue Documentation",
-  "scripts": {
-    "dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
-  },
-  "license": "MIT",
   "devDependencies": {
-    "vuepress": "^1.5.3"
+    "vitepress": "^1.0.0-rc.23"
   },
-  "dependencies": {
-    "package.json": "^2.0.1"
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
   }
 }
