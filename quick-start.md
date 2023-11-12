@@ -23,9 +23,10 @@ import { ConfigCatPlugin } from "configcat-vue";
 ```js
 app.use(ConfigCatPlugin, {
   SDKKey: "YOUR-CONFIGCAT-SDK-KEY", // SDKKey is required
-  pollingMode: 'auto',
+  // pollingMode: PollingMode.AutoPoll, // Optional. Default is PollingMode.AutoPoll. Accepted values: PollingMode.AutoPoll, PollingMode.ManualPoll, PollingMode.LazyLoad. Learn more: [ConfigCat Polling Modes](https://configcat.com/docs/sdk-reference/js/#polling-modes).
+  // Check out the advanced usage to learn how you can customize the polling mode.
   clientOptions: { // clientOptions is optional
-    pollIntervalSeconds: 95, // Use the pollIntervalSeconds to change the polling interval (how often the ConfigCat SDK should download your feature flags and setting values from ConfigCat).
+    pollIntervalSeconds: 20, // Use the pollIntervalSeconds to change the polling interval (how often the ConfigCat SDK should download your feature flags and setting values from ConfigCat).
   }
 });
 ```
@@ -43,14 +44,8 @@ The `<FeatureWrapper>` component allows you to control which parts of your Vue a
 1. In your `.vue` file, import the `<FeatureWrapper>` component:
 
 ```js
-<script>
+<script setup lang="ts">
 import { FeatureWrapper } from "configcat-vue";
-
-export default {
-  components: {
-    FeatureWrapper,
-  },
-};
 </script>
 ```
 
@@ -60,23 +55,22 @@ export default {
 <template>
   <div class="my-app">
     <FeatureWrapper featureKey="YOUR-FEATURE-KEY-GOES-HERE">
-      <!-- This is displayed when the feature flag is turned on -->
+      <!-- This is displayed when the feature flag is enabled -->
       <TheNewFeature />
     </FeatureWrapper>
   </div>
 </template>
 ```
 
-3. Optionally, this component also provides an `#else` and `#loading` template. You can include components or HTML elements within these templates that you want to display when the feature flag is **turned off** and when the ConfigCat client is loading:
+3. Optionally, this component also provides an `#else` and `#loading` template. You can include components or HTML elements within these templates that you want to display when the feature flag is disabled and when the ConfigCat client is loading:
 
 ```jsx
 <FeatureWrapper
-  featureKey="myFirstFeatureFlag"
-  @flag-value-changed="handleFlagValueChange"
+  featureKey="YOUR-FEATURE-KEY-GOES-HERE"
 >
   <TheNewFeature />
   <template #else>
-    <!-- What you want to display when the feature flag is turned off. You can add anything in this block, like HTML elements or other Vue components -->
+    <!-- What you want to display when the feature flag is disabled. You can add anything in this block, like HTML elements or other Vue components -->
     <div class="feature-not-available-wrapper">
       <p>Sorry, this feature is not available. Your feature flag is off.</p>
     </div>
@@ -90,18 +84,8 @@ export default {
 </FeatureWrapper>
 ```
 
-4. Depending on the number of seconds specified for `pollIntervalSeconds` (with the `pollingMode` option set to `auto`), if you change the value of your feature flag from "on" to "off" or vice versa, the `<FeatureWrapper>` component will automatically update itself at each interval and re-render accordingly.
+4. Depending on the number of seconds specified for `pollIntervalSeconds`, if you change the value of your feature flag from "on" to "off" or vice versa, the `<FeatureWrapper>` component will automatically update itself at each interval and re-render accordingly.
 
 > See documentation: [ConfigCat Polling Modes](https://configcat.com/docs/sdk-reference/js/#polling-modes)
 
-```js
-app.use(ConfigCatPlugin, {
-  SDKKey: "YOUR-CONFIGCAT-SDK-KEY", // SDKKey is required
-  pollingMode: 'auto', // Default is 'auto'. Accepted values: 'auto', 'manual', 'lazy'. Learn more: [ConfigCat Polling Modes](https://configcat.com/docs/sdk-reference/js/#polling-modes)
-  clientOptions: { // ClientOptions is optional
-    pollIntervalSeconds: 10, // Use the pollIntervalSeconds to change the polling interval (how often the ConfigCat SDK should download your feature flags and setting values from ConfigCat).
-  }
-});
-```
-
-5. That's it! If you want to explore more advanced usage, check out the "Advanced Usage" section.
+That's it! If you want to explore more advanced usage, check out the [Advanced Usage](/advanced-usage) section.
