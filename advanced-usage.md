@@ -1,6 +1,34 @@
 # Advanced usage
 
-Welcome to the "Advanced Usage" section of the `configcat-vue` documentation. Here, we'll explore advanced integration and utilization of the ConfigCat-Vue npm package
+Welcome to the "Advanced Usage" section of the `configcat-vue` documentation. Here, we'll explore advanced ways of using the `configcat-vue` npm package.
+
+## Specifying a polling mode
+
+1. Import `PollingMode` from `configcat-vue`:
+
+```js
+import { PollingMode } from "configcat-vue";
+```
+
+2. Add `pollingMode` to your `app.use`:
+
+```js
+app.use(ConfigCatPlugin, {
+    sdkKey: "YOUR-CONFIGCAT-SDKKEY", // sdkKey is required
+    pollingMode: PollingMode.AutoPoll, // Optional. Default is AutoPoll
+    // ...
+});
+```
+
+pollingMode can be one of the following:
+
+- `PollingMode.AutoPoll`
+
+- `PollingMode.ManualPoll`
+
+- `PollingMode.LazyLoad`
+
+> See documentation here: <https://configcat.com/docs/advanced/caching/>
 
 ## Using the plugin with a logger
 
@@ -16,24 +44,27 @@ import { ConfigCatPlugin, createConsoleLogger, LogLevel } from "configcat-vue";
 
 3. Create the logger with a specified log level:
 
-```js
-const logger = createConsoleLogger(LogLevel.Info);
-```
-
 > Documentation: <https://configcat.com/docs/sdk-reference/js/#setting-log-levels>
 
 4. Use the logger in `clientOptions`:
 
 ```js
 app.use(ConfigCatPlugin, {
-  SDKKey: "YOUR-CONFIGCAT-SDK-KEY", // SDKKey is required
-  pollingMode: 'auto', // default is 'auto'. Accepted values: 'auto', 'manual', 'lazy'. Learn more: https://configcat.com/docs/sdk-reference/js/#polling-modes
+  sdkKey: "YOUR-CONFIGCAT-SDK-KEY", // SDKKey is required
   clientOptions: { // clientOptions is optional
-    pollIntervalSeconds: 5, // Use the pollIntervalSeconds to change the polling interval (how often the ConfigCat SDK should download your feature flags and setting values).
-    logger: logger, // logger is optional
+    // ...
+    logger: createConsoleLogger(LogLevel.Info),
   }
 });
 ```
+
+The following methods are available on LogLevels:
+
+- LogLevel.Debug - All events are logged.
+- LogLevel.Info - Info, Warn and Error are logged. Debug events are discarded.
+- LogLevel.Warn - Warn and Error events are logged. Info and Debug events are discarded.
+- LogLevel.Error - Error events are logged. All other events are discarded.
+- LogLevel.Off = No events are logged.
 
 ## Using the FeatureWrapper with a User Object
 
