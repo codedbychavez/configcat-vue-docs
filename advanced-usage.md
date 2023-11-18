@@ -22,6 +22,20 @@ app.use(ConfigCatPlugin, {
 });
 ```
 
+3. If you want to change default interval of AutoPoll, add the number of seconds to `pollingIntervalInSeconds` in `clientOptions` as follows:
+
+```js
+
+app.use(ConfigCatPlugin, {
+    sdkKey: "YOUR-CONFIGCAT-SDKKEY", // sdkKey is required
+    pollingMode: PollingMode.AutoPoll, // Optional. Default is AutoPoll
+    clientOptions: {
+        pollIntervalSeconds: 5 // Optional. Specify the polling interval in seconds. Default is 60 seconds.
+    }
+});
+
+```
+
 pollingMode can be one of the following:
 
 - `PollingMode.AutoPoll`
@@ -34,25 +48,25 @@ pollingMode can be one of the following:
 
 ## Using the plugin with a logger
 
-The plugin can also be used with a logger. Here's how to do so:
+You may want to log the actions of the underlying ConfigCat SDK client. The `configcat-vue` plugin allows you to do this by specifying a logger in `clientOptions`:
 
 > See documentation here: <https://configcat.com/docs/sdk-reference/js/#logging>
 
-1. Add `createConsoleLogger`, and `LoggerLevel` to your import:
+1. First, add `createConsoleLogger`, and `LoggerLevel` to your import:
 
 ```js
 import { createConsoleLogger, LogLevel } from "configcat-vue"; 
 ```
 
-3. Create the logger with a specified log level:
+2. Create the logger with a specified log level:
 
 > Documentation: <https://configcat.com/docs/sdk-reference/js/#setting-log-levels>
 
-4. Use the logger in `clientOptions`:
+3. Use the logger in `clientOptions`:
 
 ```js
 app.use(ConfigCatPlugin, {
-  sdkKey: "YOUR-CONFIGCAT-SDK-KEY", // SDKKey is required
+  sdkKey: "YOUR-CONFIGCAT-SDK-KEY", // // sdkKey is required
   clientOptions: { // clientOptions is optional
     // ...
     logger: createConsoleLogger(LogLevel.Info),
@@ -107,7 +121,7 @@ const state = reactive({
 
 ## Listening to feature flag changes emitted from the FeatureWrapper component
 
-When you toggle your feature flag ON/OFF in the ConfigCat dashboard the **FeatureWrapper** component emits the updated feature flag value. You can listen to the changes using `@flag-value-changed`like this:
+When you toggle your feature flag ON/OFF in the ConfigCat dashboard the **FeatureWrapper** component emits the updated feature flag value. You can listen and react to the changes using `@flag-value-changed`like this:
 
 ```js
 <template>
@@ -122,7 +136,7 @@ When you toggle your feature flag ON/OFF in the ConfigCat dashboard the **Featur
 
 ```js
 <script setup lang="ts">
-
+{/* React to the flag value changes */}
 const handleFlagValueChange = (flagValue: boolean) => {
   console.log('Flag value changed to: ', flagValue);
 }
@@ -136,7 +150,7 @@ The underlying ConfigCat SDK client that powers the `configcat-vue` plugin provi
 
 > See documentation here: <https://configcat.com/docs/sdk-reference/js/#hooks>
 
-The `configcat-vue` plugin, exposes (provides) the underlying ConfigCat SDK client for doing this.
+The `configcat-vue` plugin, exposes (provides) the underlying ConfigCat SDK client incase you need to subscribe to any of its hooks.
 
 You can access it in your Vue.js app by injecting it into your component like this:
 
