@@ -2,7 +2,7 @@
 
 ## Quick start
 
-<https://configcat-vue.netlify.app/guide/quickstart.html>
+<https://configcat-vue.netlify.app/quick-start.html>
 
 ## Quick links
 
