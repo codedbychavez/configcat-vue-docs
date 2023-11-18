@@ -1,6 +1,36 @@
 # Advanced usage
 
-Welcome to the "Advanced Usage" section of the `configcat-vue` documentation. Here, we'll explore advanced integration and utilization of the ConfigCat-Vue npm package
+Welcome to the "Advanced Usage" section of the `configcat-vue` documentation. Here, we'll explore advanced ways of using the `configcat-vue` plugin
+
+## Specifying a polling mode
+
+Polling modes are used to control how often ConfigCat's SDK client downloads the values of your feature flags from ConfigCat's servers. The default polling mode is `AutoPoll`. Auto Polling fetches your latest feature flag values every 60 seconds by default. If you need to change this, you can do so by specifying a polling mode and setting the polling interval (in seconds) in the `pollingIntervalInSeconds` property.
+
+1. Import `PollingMode` from `configcat-vue`:
+
+```js
+import { PollingMode } from "configcat-vue";
+```
+
+2. Add `pollingMode` to your `app.use`:
+
+```js
+app.use(ConfigCatPlugin, {
+    sdkKey: "YOUR-CONFIGCAT-SDKKEY", // sdkKey is required
+    pollingMode: PollingMode.AutoPoll, // Optional. Default is AutoPoll
+    // ...
+});
+```
+
+pollingMode can be one of the following:
+
+- `PollingMode.AutoPoll`
+
+- `PollingMode.ManualPoll`
+
+- `PollingMode.LazyLoad`
+
+> See documentation here: <https://configcat.com/docs/advanced/caching/>
 
 ## Using the plugin with a logger
 
@@ -11,14 +41,10 @@ The plugin can also be used with a logger. Here's how to do so:
 1. Add `createConsoleLogger`, and `LoggerLevel` to your import:
 
 ```js
-import { ConfigCatPlugin, createConsoleLogger, LogLevel } from "configcat-vue"; 
+import { createConsoleLogger, LogLevel } from "configcat-vue"; 
 ```
 
 3. Create the logger with a specified log level:
-
-```js
-const logger = createConsoleLogger(LogLevel.Info);
-```
 
 > Documentation: <https://configcat.com/docs/sdk-reference/js/#setting-log-levels>
 
@@ -26,45 +52,47 @@ const logger = createConsoleLogger(LogLevel.Info);
 
 ```js
 app.use(ConfigCatPlugin, {
-  SDKKey: "YOUR-CONFIGCAT-SDK-KEY", // SDKKey is required
-  pollingMode: 'auto', // default is 'auto'. Accepted values: 'auto', 'manual', 'lazy'. Learn more: https://configcat.com/docs/sdk-reference/js/#polling-modes
+  sdkKey: "YOUR-CONFIGCAT-SDK-KEY", // SDKKey is required
   clientOptions: { // clientOptions is optional
-    pollIntervalSeconds: 5, // Use the pollIntervalSeconds to change the polling interval (how often the ConfigCat SDK should download your feature flags and setting values).
-    logger: logger, // logger is optional
+    // ...
+    logger: createConsoleLogger(LogLevel.Info),
   }
 });
 ```
 
+The following methods are available on LogLevel:
+
+- LogLevel.Debug - All events are logged.
+- LogLevel.Info - Info, Warn and Error are logged. Debug events are discarded.
+- LogLevel.Warn - Warn and Error events are logged. Info and Debug events are discarded.
+- LogLevel.Error - Error events are logged. All other events are discarded.
+- LogLevel.Off - No events are logged.
+
 ## Using the FeatureWrapper with a User Object
 
-According to ConfigCat's documentation, the [User Object](https://configcat.com/docs/advanced/user-object/) can be used to pass potential targeting rules variables. It allows you to represent a user in your application.
+The [User Object](https://configcat.com/docs/advanced/user-object/) represent a user in your application. Specifying a User Object allows you to use ConfigCat's [Targeting](https://configcat.com/docs/advanced/targeting/) feature.
 
 > See documentation here: <https://configcat.com/docs/advanced/user-object/>
 
-A User Object can be passed as a prop to the **FeatureWrapper** component.
+The User Object can be passed as a prop to the **FeatureWrapper** component.
 
-1. Define the User Object as a **data** property:
+1. Define the User Object:
 
 ```js
-<script>
+<script setup lang="ts">
+import { reactive } from 'vue';
 import { FeatureWrapper } from "configcat-vue";
 
-export default {
-  components: {
-    FeatureWrapper,
-  },
-  data() {
-    return {
-      userObject: { // Passing userObject as a prop to the FeatureWrapper is optional
-        identifier: 'john@example.com',
-      }
-    }
+const state = reactive({
+  userObject: {
+    identifier: 'john@example.com'
   }
-};
+})
+
 </script>
 ```
 
-2. Pass it to the **userObject** prop:
+2. Pass it to the **FeatureWrapper** component:
 
 ```js
 <template>
@@ -79,7 +107,7 @@ export default {
 
 ## Listening to feature flag changes emitted from the FeatureWrapper component
 
-When you toggle your feature flag ON/OFF in the ConfigCat dashboard the `configcat-vue` plugin is notified and emits the updated feature flag value. You can listen to the changes using `@flag-value-changed`like this:
+When you toggle your feature flag ON/OFF in the ConfigCat dashboard the **FeatureWrapper** component emits the updated feature flag value. You can listen to the changes using `@flag-value-changed`like this:
 
 ```js
 <template>
@@ -93,47 +121,43 @@ When you toggle your feature flag ON/OFF in the ConfigCat dashboard the `configc
 ```
 
 ```js
-<script>
+<script setup lang="ts">
 
-// ...
-export default {
-  methods: {
-    // TODO: React to changes of your feature flag value.
-    handleFlagValueChange(flagValue) {
-      console.log('The feature flag value has changed to: ', flagValue);
-    }
-  },
+const handleFlagValueChange = (flagValue: boolean) => {
+  console.log('Flag value changed to: ', flagValue);
 }
-// ...
 
 </script>
 ```
 
-## Listening to events emitted by the ConfigCat client directly
+## Listening to events emitted by the ConfigCat SDK client directly
 
-Hooks provide the means by which you can be notified about events emitted by the ConfigCat client. If this is something you'd like to know more about...
+The underlying ConfigCat SDK client that powers the `configcat-vue` plugin provides several hooks (events) that you can subscribe to if you need to get notified of its actions.
 
 > See documentation here: <https://configcat.com/docs/sdk-reference/js/#hooks>
 
-The `configcat-vue` plugin, provides the raw ConfigCat client incase you need to use it in situations like these.
+The `configcat-vue` plugin, exposes (provides) the underlying ConfigCat SDK client for doing this.
 
-You can access it in your Vue.js app by using `this.$configCat.client`:
+You can access it in your Vue.js app by injecting it into your component like this:
 
-```ts
-<script>
+```vue
+<script setup lang="ts">
+import { inject, onBeforeMount } from 'vue';
 import { FeatureWrapper } from "configcat-vue";
-import Welcome from "./components/Welcome.vue";
-import TheNewFeature from "./components/TheNewFeature.vue";
+// ...
 
-export default {
-    mounted() {
-    // If you need to subscribe to events emitted by the ConfigCat client you can do it this way:
-      this.$configCat.client.on('NAME-OF-HOOK', () => {
-        // console.log('Do something...');
-      })
-    // Learn more about hooks here: https://configcat.com/docs/sdk-reference/js/#hooks
-  },
-}
+// Import the ConfigCat SDK client interface
+import type { IConfigCatClient } from 'configcat-vue';
+
+// Inject the underlying ConfigCat SDK client that powers the `configcat-vue` plugin
+const configCatClient = inject<IConfigCatClient>('configCatClient');
+
+onBeforeMount(() => {
+  // Subscribe to the hook using the .on method of the ConfigCat SDK client
+  configCatClient?.on('flagEvaluated', () => {
+    console.log('Flag evaluated');
+  });
+});
 
 </script>
 ```
